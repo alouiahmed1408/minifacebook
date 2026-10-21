@@ -1,0 +1,110 @@
+<app-nav></app-nav>
+
+<div class="friends-root">
+  <div class="friends-header">
+    <h1 class="page-title">Friends</h1>
+    <div class="tabs">
+      <button class="tab" [class.active]="tab() === 'friends'" (click)="tab.set('friends')">
+        My friends <span class="count" *ngIf="friends().length">{{ friends().length }}</span>
+      </button>
+      <button class="tab" [class.active]="tab() === 'requests'" (click)="tab.set('requests')">
+        Requests
+        <span class="count accent" *ngIf="received().length">{{ received().length }}</span>
+      </button>
+      <button class="tab" [class.active]="tab() === 'discover'" (click)="tab.set('discover')">
+        Discover people
+      </button>
+    </div>
+  </div>
+
+  <!-- MY FRIENDS -->
+  <div *ngIf="tab() === 'friends'">
+    <div class="people-grid" *ngIf="friends().length; else noFriends">
+      <div class="person-card" *ngFor="let f of friends()">
+        <a [routerLink]="['/profile', f.id]" class="person-link">
+          <img [src]="avatar(f)" [alt]="f.nom" class="avatar-lg" />
+          <span class="person-name">{{ f.nom }}</span>
+          <span class="person-bio" *ngIf="f.bio">{{ f.bio }}</span>
+        </a>
+        <div class="person-actions">
+          <a [routerLink]="['/messages', f.id]" class="btn-sm outline">Message</a>
+          <button class="btn-sm danger" (click)="removeFriend(f)">Remove</button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noFriends>
+      <div class="empty-state">
+        <p>You have no friends yet. Discover people below!</p>
+        <button class="btn-primary" (click)="tab.set('discover')">Discover people</button>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- REQUESTS -->
+  <div *ngIf="tab() === 'requests'">
+    <div class="section-label" *ngIf="received().length">Received requests</div>
+    <div class="people-grid" *ngIf="received().length">
+      <div class="person-card" *ngFor="let req of received()">
+        <a [routerLink]="['/profile', req.userSender.id]" class="person-link">
+          <img [src]="avatar(req.userSender)" [alt]="req.userSender.nom" class="avatar-lg" />
+          <span class="person-name">{{ req.userSender.nom }}</span>
+          <span class="person-bio" *ngIf="req.userSender.bio">{{ req.userSender.bio }}</span>
+        </a>
+        <div class="person-actions">
+          <button class="btn-sm primary" (click)="accept(req)">Accept</button>
+          <button class="btn-sm outline" (click)="refuse(req)">Decline</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" *ngIf="sent().length" style="margin-top: 24px;">Sent requests</div>
+    <div class="people-grid" *ngIf="sent().length">
+      <div class="person-card" *ngFor="let req of sent()">
+        <a [routerLink]="['/profile', req.userReceiver.id]" class="person-link">
+          <img [src]="avatar(req.userReceiver)" [alt]="req.userReceiver.nom" class="avatar-lg" />
+          <span class="person-name">{{ req.userReceiver.nom }}</span>
+        </a>
+        <div class="person-actions">
+          <span class="badge-pending">Pending</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!received().length && !sent().length">
+      <p>No pending friend requests.</p>
+    </div>
+  </div>
+
+  <!-- DISCOVER -->
+  <div *ngIf="tab() === 'discover'">
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input
+        type="text"
+        placeholder="Search by name…"
+        [(ngModel)]="searchQuery"
+        (input)="searchPeople()"
+      />
+    </div>
+    <div class="people-grid" *ngIf="discover().length; else noDiscover">
+      <div class="person-card" *ngFor="let u of discover()">
+        <a [routerLink]="['/profile', u.id]" class="person-link">
+          <img [src]="avatar(u)" [alt]="u.nom" class="avatar-lg" />
+          <span class="person-name">{{ u.nom }}</span>
+          <span class="person-bio" *ngIf="u.bio">{{ u.bio }}</span>
+        </a>
+        <div class="person-actions">
+          <button
+            *ngIf="!isSentTo(u.id)"
+            class="btn-sm primary"
+            (click)="sendRequest(u)"
+          >Add friend</button>
+          <span *ngIf="isSentTo(u.id)" class="badge-pending">Sent</span>
+        </div>
+      </div>
+    </div>
+    <ng-template #noDiscover>
+      <div class="empty-state"><p>No new people found.</p></div>
+    </ng-template>
+  </div>
+</div>

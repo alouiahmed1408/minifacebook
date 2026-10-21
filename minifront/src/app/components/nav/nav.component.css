@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+
+.navbar {
+  font-family: 'DM Sans', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 28px;
+  height: 56px;
+  background: #0d0d0d;
+  border-bottom: 0.5px solid #1f1f1f;
+}
+
+.brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+}
+.brand span { color: #b8f5a0; font-style: italic; }
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 320px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #151515;
+  border: 0.5px solid #252525;
+  border-radius: 8px;
+  padding: 7px 12px;
+  color: #555;
+}
+
+.search-box input {
+  background: none;
+  border: none;
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: #fff;
+  width: 100%;
+}
+.search-box input::placeholder { color: #444; }
+
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0; right: 0;
+  background: #151515;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 200;
+}
+
+.search-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #ccc;
+  transition: background 0.15s;
+}
+.search-result:hover { background: #1f1f1f; }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  position: relative;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 13px;
+  color: #666;
+  transition: background 0.15s, color 0.15s;
+}
+.nav-link:hover { background: #1a1a1a; color: #ccc; }
+.nav-link.active { color: #b8f5a0; }
+
+.notif-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 6px 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s, color 0.15s;
+}
+.notif-btn:hover { background: #1a1a1a; color: #ccc; }
+
+.badge {
+  position: absolute;
+  top: 2px; right: 4px;
+  background: #b8f5a0;
+  color: #0d0d0d;
+  font-size: 10px;
+  font-weight: 500;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notif-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 300px;
+  background: #151515;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 200;
+  padding: 8px 0;
+}
+
+.notif-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555;
+  padding: 6px 14px 10px;
+}
+
+.notif-empty { font-size: 13px; color: #444; padding: 8px 14px; }
+
+.notif-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.notif-name { flex: 1; }
+
+.btn-accept {
+  background: #b8f5a0; color: #0d0d0d;
+  border: none; border-radius: 5px;
+  padding: 4px 10px; font-size: 12px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+}
+.btn-accept:hover { background: #a8ed8e; }
+
+.btn-refuse {
+  background: none; color: #555;
+  border: 0.5px solid #2a2a2a; border-radius: 5px;
+  padding: 4px 10px; font-size: 12px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+}
+.btn-refuse:hover { color: #f87171; border-color: #f87171; }
+
+.profile-link { display: flex; align-items: center; margin-left: 6px; }
+
+.avatar-xs {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.avatar-sm {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #2a2a2a;
+  transition: border-color 0.2s;
+}
+.avatar-sm:hover { border-color: #b8f5a0; }
+
+.logout-btn {
+  background: none; border: none;
+  color: #555; cursor: pointer;
+  padding: 6px 8px; border-radius: 8px;
+  display: flex; align-items: center;
+  transition: background 0.15s, color 0.15s;
+}
+.logout-btn:hover { background: #1a1a1a; color: #f87171; }

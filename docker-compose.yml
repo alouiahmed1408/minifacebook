@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:?set DB_NAME in .env}
+      POSTGRES_USER: ${DB_USER:?set DB_USER in .env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./MiniFaceBook
+    restart: unless-stopped
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DDL_AUTO: update
+      SEED_DEMO_DATA: ${SEED_DEMO_DATA:-false}
+      JAVA_OPTS: -XX:MaxRAMPercentage=70
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # no "ports": the API is only reachable through the frontend's /api proxy
+
+  frontend:
+    build: ./minifront
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_BIND:-0.0.0.0:80}:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

@@ -1,0 +1,77 @@
+<app-nav></app-nav>
+
+<div class="profile-root" *ngIf="!loading(); else loadingTpl">
+  <div class="profile-header card">
+    <div class="cover-bar"></div>
+    <div class="profile-identity">
+      <img [src]="avatar(profileUser())" [alt]="profileUser()?.nom" class="avatar-lg" />
+      <div class="profile-info">
+        <ng-container *ngIf="!editing()">
+          <h1 class="profile-name">{{ profileUser()?.nom }}</h1>
+          <p class="profile-bio">{{ profileUser()?.bio || 'No bio yet.' }}</p>
+          <p class="profile-email">{{ profileUser()?.email }}</p>
+        </ng-container>
+        <ng-container *ngIf="editing()">
+          <input class="edit-input" [(ngModel)]="editNom" placeholder="Name" />
+          <input class="edit-input" [(ngModel)]="editBio" placeholder="Bio" />
+          <input class="edit-input" [(ngModel)]="editPhoto" placeholder="Photo URL" />
+        </ng-container>
+      </div>
+      <div class="profile-actions">
+        <ng-container *ngIf="isOwn()">
+          <button *ngIf="!editing()" class="btn-outline" (click)="editing.set(true)">Edit profile</button>
+          <button *ngIf="editing()" class="btn-primary" (click)="saveEdit()">Save</button>
+          <button *ngIf="editing()" class="btn-outline" (click)="editing.set(false)">Cancel</button>
+        </ng-container>
+        <ng-container *ngIf="!isOwn()">
+          <button *ngIf="!isFriend() && !requestSent()" class="btn-primary" (click)="sendRequest()">Add friend</button>
+          <button *ngIf="requestSent()" class="btn-outline" disabled>Request sent</button>
+          <button *ngIf="isFriend()" class="btn-outline danger" (click)="removeFriend()">Remove friend</button>
+          <button class="btn-outline" (click)="messageUser()">Message</button>
+        </ng-container>
+      </div>
+    </div>
+    <div class="profile-stats">
+      <div class="stat"><span class="stat-num">{{ posts().length }}</span><span class="stat-label">Posts</span></div>
+      <div class="stat"><span class="stat-num">{{ friends().length }}</span><span class="stat-label">Friends</span></div>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="friends-col card">
+      <h2 class="col-title">Friends</h2>
+      <div class="friends-grid">
+        <a
+          *ngFor="let f of friends()"
+          [routerLink]="['/profile', f.id]"
+          class="friend-chip"
+        >
+          <img [src]="avatar(f)" [alt]="f.nom" class="avatar-sm" />
+          <span>{{ f.nom }}</span>
+        </a>
+        <p class="empty-hint" *ngIf="!friends().length">No friends yet.</p>
+      </div>
+    </div>
+
+    <div class="posts-col">
+      <div class="card post-card" *ngFor="let post of posts()">
+        <p class="post-content">{{ post.content }}</p>
+        <img *ngIf="post.image" [src]="post.image" class="post-image" alt="post" />
+        <div class="post-meta">
+          <span>{{ timeAgo(post.dateCreation) }}</span>
+          <span>{{ post.likes?.length ?? 0 }} likes · {{ post.comments?.length ?? 0 }} comments</span>
+          <a [routerLink]="['/post', post.idPost]" class="view-link">View</a>
+        </div>
+      </div>
+      <p class="empty-hint" *ngIf="!posts().length">No posts yet.</p>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <app-nav></app-nav>
+  <div class="loading-wrap">
+    <div class="skeleton tall"></div>
+    <div class="skeleton"></div>
+  </div>
+</ng-template>

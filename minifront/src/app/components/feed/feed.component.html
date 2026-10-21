@@ -1,0 +1,164 @@
+<app-nav></app-nav>
+
+<div class="feed-root">
+  <div class="feed-col">
+
+    <!-- ── Compose card ──────────────────────────────────────────────────── -->
+    <div class="card compose-card">
+      <div class="compose-top">
+        <img [src]="avatar(auth.currentUser())" [alt]="auth.currentUser()?.nom" class="avatar-md" />
+        <!--
+          FIX: removed conflicting [value]="newContent()" — using only the signal-aware
+          (input) handler so ngModel and the signal don't fight each other.
+        -->
+        <textarea
+          class="compose-input"
+          placeholder="What's on your mind?"
+          [value]="newContent()"
+          (input)="newContent.set($any($event.target).value)"
+          rows="2"
+        ></textarea>
+      </div>
+      <div class="compose-bottom">
+        <input
+          class="image-input"
+          type="text"
+          placeholder="Image URL (optional)"
+          [value]="image()"
+          (input)="image.set($any($event.target).value)"
+        />
+        <button class="btn-post"
+                (click)="createPost()"
+                [disabled]="submitting() || !newContent().trim()">
+          {{ submitting() ? 'Posting…' : 'Post' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Skeleton loading ──────────────────────────────────────────────── -->
+    @if (loading()) {
+      <div class="loading-state">
+        @for (i of [1,2,3]; track i) {
+          <div class="skeleton"></div>
+        }
+      </div>
+    }
+
+    <!-- ── Posts ─────────────────────────────────────────────────────────── -->
+    @for (post of posts(); track post.idPost) {
+      <div class="card post-card">
+
+        <!-- Header -->
+        <div class="post-header">
+          <a [routerLink]="['/profile', post.author.id]" class="post-author-link">
+            <img [src]="avatar(post.author)" [alt]="post.author.nom" class="avatar-md" />
+            <div>
+              <div class="author-name">{{ post.author.nom }}</div>
+              <div class="post-time">{{ timeAgo(post.dateCreation) }}</div>
+            </div>
+          </a>
+
+          @if (post.author.id === auth.currentUser()?.id) {
+            <button class="delete-btn" (click)="deletePost(post.idPost)" title="Delete post">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14H6L5 6"/>
+                <path d="M10 11v6"/>
+                <path d="M14 11v6"/>
+                <path d="M9 6V4h6v2"/>
+              </svg>
+            </button>
+          }
+        </div>
+
+        <!-- Body -->
+        <p class="post-content">{{ post.content }}</p>
+        @if (post.image) {
+          <img [src]="post.image" class="post-image" alt="post" />
+        }
+
+        <!-- Actions row -->
+        <div class="post-actions">
+          <!--
+            FIX: isLiked() and likeCount() now read from post.likes[] which is
+            fetched from the DB on load and refreshed after every toggle.
+          -->
+          <button class="action-btn"
+                  [class.liked]="isLiked(post)"
+                  [disabled]="post.likePending"
+                  (click)="toggleLike(post)">
+            <svg width="16" height="16" viewBox="0 0 24 24"
+                 [attr.fill]="isLiked(post) ? '#b8f5a0' : 'none'"
+                 stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            {{ likeCount(post) }} {{ likeCount(post) === 1 ? 'Like' : 'Likes' }}
+          </button>
+
+          <button class="action-btn" (click)="toggleComments(post.idPost)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <!--
+              FIX: count now comes from post.comments[] loaded from DB,
+              not from stale embedded data.
+            -->
+            {{ post.comments.length }} {{ post.comments.length === 1 ? 'Comment' : 'Comments' }}
+          </button>
+
+          <a [routerLink]="['/post', post.idPost]" class="action-btn view-btn">View</a>
+        </div>
+
+        <!-- Comment section (expanded) -->
+        @if (isExpanded(post.idPost)) {
+          <div class="comments-section">
+
+            @for (c of post.comments; track c.idComment) {
+              <div class="comment">
+                <img [src]="avatar(c.user)" [alt]="c.user.nom" class="avatar-xs" />
+                <div class="comment-body">
+                  <span class="comment-author">{{ c.user.nom }}</span>
+                  <span class="comment-text">{{ c.content }}</span>
+                </div>
+                <!-- FIX: added delete button for own comments directly in feed -->
+                @if (c.user.id === auth.currentUser()?.id) {
+                  <button class="delete-btn small" (click)="deleteComment(post, c.idComment)" title="Delete comment">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"/>
+                      <path d="M19 6l-1 14H6L5 6"/>
+                    </svg>
+                  </button>
+                }
+              </div>
+            }
+
+            @if (!post.comments.length) {
+              <p class="empty-hint">No comments yet.</p>
+            }
+
+            <div class="comment-compose">
+              <img [src]="avatar(auth.currentUser())" class="avatar-xs" alt="me" />
+              <input
+                class="comment-input"
+                type="text"
+                placeholder="Write a comment…"
+                [(ngModel)]="commentInputs[post.idPost]"
+                (keyup.enter)="submitComment(post)"
+              />
+              <button class="btn-comment" (click)="submitComment(post)">Send</button>
+            </div>
+
+          </div>
+        }
+
+      </div>
+    }
+
+    @if (!loading() && !posts().length) {
+      <div class="empty-state">
+        <p>No posts yet. Be the first to share something!</p>
+      </div>
+    }
+
+  </div>
+</div>

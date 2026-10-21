@@ -1,0 +1,80 @@
+<app-nav></app-nav>
+
+<div class="messages-root">
+  <!-- Sidebar: friends list -->
+  <div class="sidebar">
+    <div class="sidebar-title">Messages</div>
+    <div class="friend-list">
+      <div
+        *ngFor="let f of friends()"
+        class="friend-row"
+        [class.active]="activeUser()?.id === f.id"
+        (click)="openConversation(f)"
+      >
+        <img [src]="avatar(f)" [alt]="f.nom" class="avatar-md" />
+        <div class="friend-row-info">
+          <span class="friend-row-name">{{ f.nom }}</span>
+        </div>
+      </div>
+      <div class="empty-hint" *ngIf="!friends().length">
+        Add friends to start messaging
+      </div>
+    </div>
+  </div>
+
+  <!-- Conversation -->
+  <div class="convo-pane" *ngIf="activeUser(); else noConvo">
+    <div class="convo-header">
+      <img [src]="avatar(activeUser())" [alt]="activeUser()?.nom" class="avatar-md" />
+      <span class="convo-name">{{ activeUser()?.nom }}</span>
+    </div>
+
+    <div class="convo-body">
+      <div class="loading-msgs" *ngIf="loadingConvo()">Loading…</div>
+
+      <div
+        *ngFor="let msg of conversation()"
+        class="message-row"
+        [class.own]="isOwn(msg)"
+      >
+        <img
+          *ngIf="!isOwn(msg)"
+          [src]="avatar(msg.userSender)"
+          class="avatar-xs"
+          [alt]="msg.userSender?.nom"
+        />
+        <div class="bubble-wrap">
+          <div class="bubble" [class.own-bubble]="isOwn(msg)">
+            {{ msg.content }}
+          </div>
+          <span class="msg-time">{{ formatTime(msg.dateEnvoi) }}</span>
+        </div>
+      </div>
+
+      <div #messagesEnd></div>
+    </div>
+
+    <div class="convo-footer">
+      <input
+        class="msg-input"
+        type="text"
+        placeholder="Type a message…"
+        [(ngModel)]="newMessage"
+        (keyup.enter)="sendMessage()"
+      />
+      <button class="btn-send" (click)="sendMessage()" [disabled]="sending() || !newMessage.trim()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <ng-template #noConvo>
+    <div class="no-convo">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <p>Select a friend to start chatting</p>
+    </div>
+  </ng-template>
+</div>

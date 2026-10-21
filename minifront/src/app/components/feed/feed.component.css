@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap');
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: #f9f9f9;
+  color: #111;
+}
+
+.feed-root {
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.feed-col {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Cards */
+.card, .post-card, .compose-card, .comment-body {
+  border-radius: 1rem;
+  padding: 1.25rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.card:hover, .post-card:hover, .compose-card:hover, .comment-body:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  border-color: #7cd67c;
+}
+
+/* Inputs */
+.compose-input, .image-input, .comment-input {
+  flex: 1;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  background-color: #f5f5f8;
+  border: 1px solid #d1d1d8;
+  color: #111;
+  font-size: 0.875rem;
+}
+
+.compose-input:focus, .image-input:focus, .comment-input:focus {
+  border-color: #7cd67c;
+  box-shadow: 0 0 8px rgba(124,214,124,0.25);
+  outline: none;
+}
+
+.compose-input::placeholder, .image-input::placeholder, .comment-input::placeholder {
+  color: #999;
+}
+
+/* Buttons */
+.btn-post, .btn-comment {
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  color: #fff;
+  background-color: #7cd67c;
+  border: none;
+  transition: background 0.3s, transform 0.2s;
+  cursor: pointer;
+}
+
+.btn-post:hover, .btn-comment:hover {
+  background-color: #66c766;
+  transform: translateY(-1px);
+}
+
+.btn-post:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Post Header */
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.post-author-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.author-name {
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+.post-time {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+/* Actions */
+.delete-btn, .action-btn {
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.delete-btn:hover, .action-btn:hover {
+  color: #52b252;
+  border-color: #7cd67c;
+}
+
+/* Post content */
+.post-content {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d1d8;
+  background-color: #f5f5f8;
+  white-space: pre-wrap;
+}
+
+/* Post image */
+.post-image {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Post actions */
+.post-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d1d8;
+  background-color: #f5f5f8;
+}
+
+.action-btn.liked {
+  color: #7cd67c;
+}
+
+.view-btn {
+  margin-left: auto;
+}
+
+/* Comments */
+.comments-section {
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid #d1d1d8;
+  background-color: #f5f5f8;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.comment {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.comment-author {
+  font-weight: 500;
+  color: #666;
+  margin-right: 0.5rem;
+}
+
+.comment-text {
+  color: #111;
+}
+
+/* Avatars */
+.avatar-md { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+.avatar-xs { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
+
+/* Skeleton loading */
+.skeleton {
+  height: 150px;
+  border-radius: 0.875rem;
+  background: linear-gradient(90deg, #ffffff 25%, #f0f0f5 50%, #ffffff 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border: 1px solid #d1d1d8;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 3rem 0;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+/* Dark mode */
+.dark-mode {
+  --bg-color: #0f0f0f;
+  --card-bg: #1a1a1a;
+  --input-bg: #222;
+  --border-color: #444;
+  --text-color: #ddd;
+  --text-muted: #888;
+  --hover-bg: #2c2c2c;
+  --accent-color: #7cd67c;
+  --accent-hover: #66c766;
+}

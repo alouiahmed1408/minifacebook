@@ -1,0 +1,66 @@
+<div class="auth-root">
+  <div class="bg-noise"></div>
+
+  <div class="auth-container" [class.register-active]="isRegister()">
+
+    <div class="auth-panel login-panel">
+      <div class="brand">Fb<span>Front</span></div>
+      <div class="tagline"><span class="accent-dot"></span>Your social space</div>
+      <h2 class="panel-title">Welcome back</h2>
+      <p class="panel-sub">Sign in to continue</p>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" placeholder="you@example.com" [(ngModel)]="loginEmail" name="loginEmail" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" placeholder="••••••••" [(ngModel)]="loginPassword" name="loginPassword" (keyup.enter)="onLogin()" />
+      </div>
+
+      <div class="error-msg" *ngIf="errorMsg()">{{ errorMsg() }}</div>
+
+      <button class="btn-primary" (click)="onLogin()" [disabled]="isLoading()">
+        {{ isLoading() ? 'Signing in…' : 'Sign in' }}
+      </button>
+      <p class="switch-text">New here? <button class="switch-link" (click)="switchToRegister()">Create an account</button></p>
+    </div>
+
+    <div class="auth-panel register-panel">
+      <h2 class="panel-title">Join FbFront</h2>
+      <p class="panel-sub">It only takes a moment</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Full name <span class="req">*</span></label>
+          <input class="form-input" type="text" placeholder="Your name" [(ngModel)]="regNom" name="regNom" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email <span class="req">*</span></label>
+          <input class="form-input" type="email" placeholder="you@example.com" [(ngModel)]="regEmail" name="regEmail" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password <span class="req">*</span></label>
+        <input class="form-input" type="password" placeholder="Create a strong password" [(ngModel)]="regPassword" name="regPassword" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bio <span class="optional">(optional)</span></label>
+        <input class="form-input" type="text" placeholder="A few words about you" [(ngModel)]="regBio" name="regBio" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Profile photo URL <span class="optional">(optional)</span></label>
+        <input class="form-input" type="text" placeholder="https://..." [(ngModel)]="regPhotoProfile" name="regPhotoProfile" />
+      </div>
+
+      <div class="error-msg" *ngIf="errorMsg()">{{ errorMsg() }}</div>
+      <div class="success-msg" *ngIf="successMsg()">{{ successMsg() }}</div>
+
+      <button class="btn-primary" (click)="onRegister()" [disabled]="isLoading()">
+        {{ isLoading() ? 'Creating account…' : 'Create account' }}
+      </button>
+      <p class="switch-text">Already have an account? <button class="switch-link" (click)="switchToLogin()">Sign in</button></p>
+    </div>
+
+  </div>
+</div>
