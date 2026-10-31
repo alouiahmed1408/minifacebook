@@ -13,7 +13,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/friends")
-@CrossOrigin(origins = {"http://localhost:49557", "http://localhost:4200"})
+@CrossOrigin(origins = {"*"})
 public class FriendRequestController {
 
     @Autowired
