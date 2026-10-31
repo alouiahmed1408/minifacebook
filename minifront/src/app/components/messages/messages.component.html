@@ -41,7 +41,7 @@
           *ngIf="!isOwn(msg)"
           [src]="avatar(msg.userSender)"
           class="avatar-xs"
-          [alt]="msg.userSender?.nom"
+          [alt]="msg.userSender.nom"
         />
         <div class="bubble-wrap">
           <div class="bubble" [class.own-bubble]="isOwn(msg)">
