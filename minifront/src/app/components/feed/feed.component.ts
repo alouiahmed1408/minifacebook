@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { PostService } from '../../services/post.service';
 import { CommentService } from '../../services/comment.service';
 import { LikeService } from '../../services/like.service';
-import { Post, Like, Comment ,User} from '../../models/models';
+import { Post, Like, Comment } from '../../models/models';
 
 interface PostVM extends Post {
   likes: Like[];
@@ -82,29 +82,26 @@ export class FeedComponent implements OnInit {
   }
 
   createPost(): void {
-  const content = this.newContent().trim();
-  const image = this.image().trim();
-  if ((!content && !image) || this.submitting()) return;
-  const me = this.auth.currentUser()!;
-  this.submitting.set(true);
-  this.postService.create({
-    content,
-    image,
-    dateCreation: new Date().toISOString().slice(0, 10),
-    author: { id: me.id } as User
-  } as Partial<Post>).subscribe({
-    next: () => {
-      this.newContent.set('');
-      this.image.set('');
-      this.submitting.set(false);
-      this.loadFeed();
-    },
-    error: err => {
-      this.submitting.set(false);
-      alert(`Post failed (HTTP ${err.status})`);
-    }
-  });
-}
+    const content = this.newContent().trim();
+    const image = this.image().trim();
+    if ((!content && !image) || this.submitting()) return;
+    const me = this.auth.currentUser()!;
+    this.submitting.set(true);
+    this.postService.create({
+      content,
+      image,
+      dateCreation: new Date().toISOString().slice(0, 10),
+      author: me
+    } as Partial<Post>).subscribe({
+      next: () => {
+        this.newContent.set('');
+        this.image.set('');
+        this.submitting.set(false);
+        this.loadFeed();
+      },
+      error: () => this.submitting.set(false)
+    });
+  }
 
   deletePost(postId: number): void {
     this.postService.delete(postId).subscribe({
