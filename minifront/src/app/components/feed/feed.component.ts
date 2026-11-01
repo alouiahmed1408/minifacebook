@@ -28,6 +28,7 @@ export class FeedComponent implements OnInit {
   posts = signal<PostVM[]>([]);
   loading = signal(true);
   submitting = signal(false);
+  postError = signal('');
   newContent = signal('');
   image = signal('');
   expanded = new Set<number>();
@@ -87,6 +88,7 @@ export class FeedComponent implements OnInit {
     if ((!content && !image) || this.submitting()) return;
     const me = this.auth.currentUser()!;
     this.submitting.set(true);
+    this.postError.set('');
     this.postService.create({
       content,
       image,
@@ -99,7 +101,14 @@ export class FeedComponent implements OnInit {
         this.submitting.set(false);
         this.loadFeed();
       },
-      error: () => this.submitting.set(false)
+      error: err => {
+        this.submitting.set(false);
+        this.postError.set(
+          err?.status === 0
+            ? 'Cannot reach the server. Start the backend first (it runs on port 8086).'
+            : `Could not publish your post (HTTP ${err?.status ?? '?'}). Please try again.`
+        );
+      }
     });
   }
 

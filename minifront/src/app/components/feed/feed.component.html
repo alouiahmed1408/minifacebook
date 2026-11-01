@@ -29,10 +29,13 @@
         />
         <button class="btn-post"
                 (click)="createPost()"
-                [disabled]="submitting() || !newContent().trim()">
+                [disabled]="submitting() || (!newContent().trim() && !image().trim())">
           {{ submitting() ? 'Posting…' : 'Post' }}
         </button>
       </div>
+      @if (postError()) {
+        <p class="compose-error">{{ postError() }}</p>
+      }
     </div>
 
     <!-- ── Skeleton loading ──────────────────────────────────────────────── -->

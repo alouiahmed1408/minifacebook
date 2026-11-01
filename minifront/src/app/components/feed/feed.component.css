@@ -80,6 +80,12 @@ body {
   cursor: not-allowed;
 }
 
+.compose-error {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: #c0392b;
+}
+
 /* Post Header */
 .post-header {
   display: flex;
