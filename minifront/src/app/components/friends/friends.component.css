@@ -209,3 +209,15 @@ body, html {
   align-items: center;
   gap: 6px;
 }
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  .friends-root { padding: 16px 12px; }
+  .friends-header { margin-bottom: 18px; }
+  .tabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { white-space: nowrap; flex-shrink: 0; padding: 8px 14px; }
+  .search-bar { max-width: 100%; }
+  .people-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .person-card { padding: 16px 10px 12px; }
+}

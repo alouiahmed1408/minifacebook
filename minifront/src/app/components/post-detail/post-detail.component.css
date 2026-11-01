@@ -6,6 +6,7 @@
   font-family: 'DM Sans', sans-serif;
   background: #0a0a0a;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 28px 16px;
   max-width: 680px;
   margin: 0 auto;
@@ -209,3 +210,17 @@
   background-size: 200% 100%; animation: shimmer 1.4s infinite;
 }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ===== Responsive ===== */
+.comment-text, .post-content { overflow-wrap: anywhere; }
+.comment-body { min-width: 0; }
+
+@media (max-width: 640px) {
+  .detail-root { padding: 14px 10px; }
+  .card { padding: 14px; }
+  .post-image { max-height: 340px; }
+  .comment-compose { flex-wrap: wrap; }
+  .comment-compose .comment-input { flex: 1 1 140px; min-width: 0; }
+  .comment-item { gap: 8px; }
+  .edit-actions { flex-wrap: wrap; }
+}

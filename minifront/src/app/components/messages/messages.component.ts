@@ -77,6 +77,13 @@ export class MessagesComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.startPolling(user);
   }
 
+  /** Mobile: go back from the open chat to the friend list */
+  closeConversation(): void {
+    this.stopPolling();
+    this.activeUser.set(null);
+    this.conversation.set([]);
+  }
+
   /**
    * Load the conversation once.
    * @param scrollToEnd  whether to auto-scroll after load

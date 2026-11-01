@@ -8,6 +8,7 @@ body {
 
 .feed-root {
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 3rem 1rem;
   display: flex;
   justify-content: center;
@@ -224,4 +225,22 @@ body {
   --hover-bg: #2c2c2c;
   --accent-color: #7cd67c;
   --accent-hover: #66c766;
+}
+
+/* ===== Responsive ===== */
+.post-content, .comment-text { overflow-wrap: anywhere; }
+.compose-top, .compose-bottom { display: flex; gap: 0.75rem; }
+.compose-bottom { align-items: center; }
+
+@media (max-width: 640px) {
+  .feed-root { padding: 1rem 0.625rem; }
+  .card, .post-card, .compose-card, .comment-body { padding: 0.875rem; }
+  .compose-bottom { flex-wrap: wrap; }
+  .compose-bottom .image-input { flex: 1 1 100%; }
+  .btn-post { width: 100%; padding: 0.625rem 1rem; }
+  .post-image { max-height: 320px; }
+  .post-actions { flex-wrap: wrap; }
+  .comment-compose { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .comment-compose .comment-input { flex: 1 1 140px; min-width: 0; }
+  .avatar-md { width: 42px; height: 42px; }
 }

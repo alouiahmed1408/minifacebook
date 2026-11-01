@@ -5,6 +5,7 @@
 .auth-root {
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -113,4 +114,13 @@
   .auth-container { flex-direction: column; width: 95%; height: auto; }
   .auth-panel { width: 100%; padding: 32px; position: relative; transform: translateX(0) !important; opacity: 1 !important; }
   .form-row { grid-template-columns: 1fr; }
+}
+
+/* ===== Small phones ===== */
+.auth-root { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+@media (max-width: 480px) {
+  .auth-panel { padding: 24px 18px !important; }
+  .brand { font-size: 26px; }
+  .tagline { margin-bottom: 24px; }
+  .form-input { font-size: 16px; }
 }

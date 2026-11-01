@@ -1,6 +1,6 @@
 <app-nav></app-nav>
 
-<div class="messages-root">
+<div class="messages-root" [class.has-active]="activeUser()">
   <!-- Sidebar: friends list -->
   <div class="sidebar">
     <div class="sidebar-title">Messages</div>
@@ -25,6 +25,9 @@
   <!-- Conversation -->
   <div class="convo-pane" *ngIf="activeUser(); else noConvo">
     <div class="convo-header">
+      <button class="back-btn" (click)="closeConversation()" aria-label="Back to conversations">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
       <img [src]="avatar(activeUser())" [alt]="activeUser()?.nom" class="avatar-md" />
       <span class="convo-name">{{ activeUser()?.nom }}</span>
     </div>

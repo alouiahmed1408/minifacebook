@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+/* ================= Responsive / mobile ================= */
+img, video { max-width: 100%; }
+.post-content, .comment-text, .bubble { overflow-wrap: anywhere; }
+
+/* >=16px inputs stop iOS Safari from zooming the page on focus */
+@media (max-width: 768px) {
+  input, textarea, select { font-size: 16px !important; }
+  button { min-height: 40px; }
+}
+
+@media (max-width: 640px) {
+  .feed-root { padding: 16px 10px; }
+  .feed-col { gap: 16px; }
+  .card, .post-card, .compose-card { padding: 14px; border-radius: 14px; }
+  .compose-top { gap: 12px; margin-bottom: 12px; }
+  .compose-bottom { padding-left: 0; flex-wrap: wrap; gap: 10px; }
+  .compose-bottom .image-input { flex: 1 1 100%; }
+  .btn-post { width: 100%; }
+  .post-actions { flex-wrap: wrap; }
+  .comment-compose { flex-wrap: wrap; }
+  .comment-input { min-width: 0; }
+}

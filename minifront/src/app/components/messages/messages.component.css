@@ -6,6 +6,7 @@
   font-family: 'DM Sans', sans-serif;
   display: flex;
   height: calc(100vh - 56px);
+  height: calc(100dvh - 56px);
   background: #0a0a0a;
   overflow: hidden;
 }
@@ -164,8 +165,29 @@
 
 .empty-hint { font-size: 13px; color: #444; padding: 16px; }
 
-@media (max-width: 600px) {
-  .sidebar { width: 64px; }
-  .friend-row-name { display: none; }
-  .sidebar-title { display: none; }
+.back-btn {
+  display: none;
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: #ccc;
+  padding: 6px 8px;
+  min-height: 0;
+  border-radius: 8px;
+}
+.back-btn:hover:not(:disabled) { background: #1a1a1a; transform: none; box-shadow: none; }
+.convo-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.msg-input { min-width: 0; }
+
+@media (max-width: 700px) {
+  .sidebar { width: 100%; border-right: none; }
+  .convo-pane { width: 100%; }
+  /* show either the friend list or the open chat, never both */
+  .messages-root.has-active .sidebar { display: none; }
+  .messages-root:not(.has-active) .no-convo { display: none; }
+  .back-btn { display: flex; align-items: center; }
+  .convo-header { padding: 10px 12px; }
+  .convo-body { padding: 14px 12px 8px; }
+  .bubble-wrap { max-width: 82%; }
+  .convo-footer { padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); }
 }

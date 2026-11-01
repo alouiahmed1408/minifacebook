@@ -199,3 +199,36 @@
   transition: background 0.15s, color 0.15s;
 }
 .logout-btn:hover { background: #1a1a1a; color: #f87171; }
+
+/* ===== Responsive ===== */
+.navbar { padding-left: max(28px, env(safe-area-inset-left)); padding-right: max(28px, env(safe-area-inset-right)); }
+.search-wrap { min-width: 0; }
+
+@media (max-width: 900px) {
+  .nav-link span { display: none; }
+  .nav-link { padding: 8px 10px; }
+}
+
+@media (max-width: 600px) {
+  .navbar { padding: 0 10px; gap: 8px; }
+  .brand span { display: none; }
+  .search-box { padding: 7px 10px; }
+  .search-box svg { flex-shrink: 0; }
+  .nav-actions { gap: 0; }
+  .nav-link, .notif-btn, .logout-btn { padding: 9px 8px; }
+  .profile-link { margin-left: 2px; }
+  .notif-panel {
+    position: fixed;
+    top: 60px;
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-height: calc(100dvh - 76px);
+    overflow-y: auto;
+  }
+  .notif-item { flex-wrap: wrap; }
+}
+
+@media (max-width: 380px) {
+  .brand { display: none; }
+}

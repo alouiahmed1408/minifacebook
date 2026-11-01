@@ -13,7 +13,6 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/friends")
-@CrossOrigin(origins = {"*"})
 public class FriendRequestController {
 
     @Autowired
