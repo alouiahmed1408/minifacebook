@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { PostService } from '../../services/post.service';
 import { CommentService } from '../../services/comment.service';
 import { LikeService } from '../../services/like.service';
-import { Post, Like, Comment } from '../../models/models';
+import { Post, Like, Comment ,User} from '../../models/models';
 
 interface PostVM extends Post {
   likes: Like[];
